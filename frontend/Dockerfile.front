@@ -1,1 +1,26 @@
 FROM baseImage
+
+# Utiliser une image Node.js comme base
+FROM node:18
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers package.json et package-lock.json
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste des fichiers
+COPY . .
+
+# Construire l'application pour la production
+RUN npm run build
+
+# Utiliser une image nginx pour servir les fichiers statiques
+FROM nginx:1.27
+COPY --from=0 /app/build /usr/share/nginx/html
+
+# Exposer le port utilisé par nginx
+EXPOSE 80
