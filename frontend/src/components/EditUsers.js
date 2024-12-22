@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import API from '../api';
 
-const AddUser = ({ onAdd }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+const EditUser = ({ user, onUpdate, onCancel }) => {
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await API.post('/', { name, email });
-      onAdd(response.data); // Ajoutez l'utilisateur à la liste
-      setName('');
-      setEmail('');
+      const response = await API.put(`/${user._id}`, { name, email });
+      onUpdate(response.data); // Met à jour l'utilisateur dans la liste
+      onCancel(); // Ferme le formulaire d'édition
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'utilisateur:', error);
+      console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="mb-4">
-      <h2 className="mb-3">Ce site a été réalisé par Alpha (TD44), Yanis, Ibrahim et Matthis (TD45)</h2>
+      <h2 className="mb-3">Modifier l'Utilisateur</h2>
       <div className="mb-3">
         <input
           type="text"
@@ -40,12 +39,14 @@ const AddUser = ({ onAdd }) => {
           required
         />
       </div>
-      <button type="submit" className="btn btn-primary w-100">
-        Ajouter
+      <button type="submit" className="btn btn-success me-2">
+        Enregistrer
+      </button>
+      <button type="button" className="btn btn-secondary" onClick={onCancel}>
+        Annuler
       </button>
     </form>
   );
 };
 
-
-export default AddUser;
+export default EditUser;
