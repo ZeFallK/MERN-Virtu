@@ -3,8 +3,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Environment variables
-.env
+
 
 # Logs
 logs/
@@ -18,7 +17,7 @@ yarn-error.log*
 Thumbs.db
 
 # Backend build
-backend/config/.env
+
 backend/node_modules/
 backend/logs/
 backend/*.log
